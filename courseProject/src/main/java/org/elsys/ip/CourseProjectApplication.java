@@ -10,7 +10,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+
+import static org.hibernate.cache.spi.support.SimpleTimestamper.next;
 
 @SpringBootApplication
 public class CourseProjectApplication {
@@ -42,7 +45,8 @@ public class CourseProjectApplication {
 
         repository.save(question);
 
-        Question first = repository.findAll().iterator().next();
-        System.out.println(first.toString());
+        for (Question first : repository.findAll()) {
+            System.out.println(first.toString());
+        }
     }
 }
