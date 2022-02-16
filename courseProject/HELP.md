@@ -22,3 +22,5 @@ https://www.baeldung.com/spring-boot-h2-database
 https://spring.io/guides/gs/accessing-data-jpa/
 https://www.baeldung.com/h2-embedded-db-data-storage
 https://spring.io/guides/gs/testing-web/
+https://spring.io/guides/gs/securing-web/
+

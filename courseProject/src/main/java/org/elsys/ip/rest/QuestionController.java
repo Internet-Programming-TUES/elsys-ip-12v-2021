@@ -4,6 +4,7 @@ import org.elsys.ip.model.Question;
 import org.elsys.ip.model.QuestionRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -11,6 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/question")
 public class QuestionController {
     private final QuestionRepository repository;
 
