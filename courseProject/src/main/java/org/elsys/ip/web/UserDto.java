@@ -3,6 +3,7 @@ package org.elsys.ip.web;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+@PasswordMatches
 public class UserDto {
     @NotNull
     @NotEmpty
@@ -19,6 +20,7 @@ public class UserDto {
 
     @NotNull
     @NotEmpty
+    @ValidEmail
     private String email;
 
     public String getFirstName() {
