@@ -31,6 +31,8 @@
     <label th:text="#{label.user.confirmPass}">confirm</label>
     <input type="password" th:field="*{matchingPassword}"/>
   </div>
+<!--  <p th:each="error : ${#fields.errors('user')}"-->
+<!--     th:text="${error}">Validation error</p>-->
   <button type="submit" th:text="#{label.form.submit}">submit</button>
 </form>
 

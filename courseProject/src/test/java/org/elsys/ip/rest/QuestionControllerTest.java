@@ -1,8 +1,11 @@
 package org.elsys.ip.rest;
 
+import org.elsys.ip.error.UserAlreadyExistException;
 import org.elsys.ip.model.Answer;
 import org.elsys.ip.model.Question;
 import org.elsys.ip.model.QuestionRepository;
+import org.elsys.ip.service.UserService;
+import org.elsys.ip.web.UserDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,11 +34,14 @@ public class QuestionControllerTest {
     @Autowired
     private QuestionRepository repository;
 
+    @Autowired
+    private UserService userService;
+
     private String questionId;
 
     @Test
     public void getSingleQuestion() throws Exception {
-        Question question = this.restTemplate.getForObject("http://localhost:" + port + "/?questionId=" + questionId,
+        Question question = this.restTemplate.withBasicAuth("email@email.com", "password").getForObject("http://localhost:" + port + "/?questionId=" + questionId,
                 Question.class);
 
         assertThat(question.getText()).isEqualTo("Kolko e 2+2?");
@@ -43,13 +49,20 @@ public class QuestionControllerTest {
 
     @Test
     public void getNotExistingQuestion() throws Exception {
-        ResponseEntity<String> response = this.restTemplate.getForEntity("http://localhost:" + port + "/?questionId=c1792663-84c4-4b38-aa78-f1a185836177", String.class);
+        ResponseEntity<String> response = this.restTemplate.withBasicAuth("email@email.com", "password").getForEntity("http://localhost:" + port + "/?questionId=c1792663-84c4-4b38-aa78-f1a185836177", String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @BeforeAll
-    public void setUp() {
+    public void setUp() throws UserAlreadyExistException {
+        UserDto user = new UserDto();
+        user.setFirstName("Test");
+        user.setLastName("User");
+        user.setEmail("email@email.com");
+        user.setPassword("password");
+        userService.registerNewUserAccount(user);
+
         Question question = new Question();
         question.setText("Kolko e 2+2?");
         Answer answer1 = new Answer();
