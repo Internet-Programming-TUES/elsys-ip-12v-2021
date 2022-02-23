@@ -1,4 +1,4 @@
-package org.elsys.ip.web;
+package org.elsys.ip.web.model.validator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

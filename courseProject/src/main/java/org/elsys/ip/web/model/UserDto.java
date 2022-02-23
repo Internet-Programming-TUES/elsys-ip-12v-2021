@@ -1,4 +1,7 @@
-package org.elsys.ip.web;
+package org.elsys.ip.web.model;
+
+import org.elsys.ip.web.model.validator.PasswordMatches;
+import org.elsys.ip.web.model.validator.ValidEmail;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

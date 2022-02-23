@@ -1,4 +1,6 @@
-package org.elsys.ip.web;
+package org.elsys.ip.web.model.validator;
+
+import org.elsys.ip.web.model.UserDto;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

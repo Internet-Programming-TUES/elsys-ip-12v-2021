@@ -5,9 +5,8 @@ import org.elsys.ip.model.Answer;
 import org.elsys.ip.model.Question;
 import org.elsys.ip.model.QuestionRepository;
 import org.elsys.ip.service.UserService;
-import org.elsys.ip.web.UserDto;
+import org.elsys.ip.web.model.UserDto;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,15 +39,18 @@ public class QuestionControllerTest {
 
     @Test
     public void getSingleQuestion() throws Exception {
-        Question question = this.restTemplate.withBasicAuth("email@email.com", "password").getForObject("http://localhost:" + port + "/?questionId=" + questionId,
-                Question.class);
+        Question question = this.restTemplate.withBasicAuth("email@email.com", "password").
+                getForObject("http://localhost:" + port + "/api/question?questionId=" + questionId,
+                        Question.class);
 
         assertThat(question.getText()).isEqualTo("Kolko e 2+2?");
     }
 
     @Test
     public void getNotExistingQuestion() throws Exception {
-        ResponseEntity<String> response = this.restTemplate.withBasicAuth("email@email.com", "password").getForEntity("http://localhost:" + port + "/?questionId=c1792663-84c4-4b38-aa78-f1a185836177", String.class);
+        ResponseEntity<String> response = this.restTemplate.withBasicAuth("email@email.com", "password").
+                getForEntity("http://localhost:" + port + "/api/question?questionId=c1792663-84c4-4b38-aa78-f1a185836177",
+                        String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
