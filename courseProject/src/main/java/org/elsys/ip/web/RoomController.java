@@ -1,5 +1,6 @@
 package org.elsys.ip.web;
 
+import org.elsys.ip.error.RoomAlreadyExistException;
 import org.elsys.ip.error.RoomNotExistException;
 import org.elsys.ip.service.RoomService;
 import org.elsys.ip.service.UserService;
@@ -47,7 +48,11 @@ public class RoomController {
 
     @PostMapping("/room")
     public String createRoom(@ModelAttribute("room") @Valid RoomDto roomDto, BindingResult bindingResult, Model model) {
-        roomService.createRoom(roomDto);
+        try {
+            roomService.createRoom(roomDto);
+        } catch (RoomAlreadyExistException e) {
+            return "error";
+        }
         return "room";
     }
 

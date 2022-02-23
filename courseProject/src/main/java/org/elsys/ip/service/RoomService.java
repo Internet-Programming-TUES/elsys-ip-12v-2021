@@ -1,5 +1,6 @@
 package org.elsys.ip.service;
 
+import org.elsys.ip.error.RoomAlreadyExistException;
 import org.elsys.ip.error.RoomNotExistException;
 import org.elsys.ip.error.UserAlreadyExistException;
 import org.elsys.ip.model.Room;
@@ -32,7 +33,11 @@ public class RoomService {
     @Autowired
     private UserRepository userRepository;
 
-    public RoomDto createRoom(RoomDto roomDto) {
+    public RoomDto createRoom(RoomDto roomDto) throws RoomAlreadyExistException {
+        if (roomRepository.findByName(roomDto.getName()).isPresent()) {
+            throw new RoomAlreadyExistException("Room with name " + roomDto.getName() + " already exists.");
+        }
+
         UserDetails currentUser = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findByEmail(currentUser.getUsername());
 
