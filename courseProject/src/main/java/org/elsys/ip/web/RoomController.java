@@ -9,6 +9,7 @@ import org.elsys.ip.web.model.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,7 @@ public class RoomController {
     @GetMapping("/rooms")
     public String allRooms(WebRequest request, Model model) {
         model.addAttribute("room", new RoomDto());
-        model.addAttribute("rooms",  roomService.getRooms());
+        model.addAttribute("rooms", roomService.getRooms());
 
         return "rooms";
     }
@@ -37,22 +38,22 @@ public class RoomController {
     @PostMapping("/rooms")
     public String createRoom(@ModelAttribute("room") @Valid RoomDto roomDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("rooms",  roomService.getRooms());
+            model.addAttribute("rooms", roomService.getRooms());
             return "rooms";
         }
 
         try {
-            RoomDto room = roomService.createRoom(roomDto);
+            RoomDto room = roomService.createRoom(roomDto.getName());
             return "redirect:/room?id=" + room.getId();
         } catch (RoomAlreadyExistException e) {
             bindingResult.rejectValue("name", "room", "A room with that name already exists.");
-            model.addAttribute("rooms",  roomService.getRooms());
+            model.addAttribute("rooms", roomService.getRooms());
             return "rooms";
         }
     }
 
     @GetMapping("/room")
-    public String singleRoom(WebRequest request, Model model, @RequestParam("id") String roomId) {
+    public String singleRoom(Model model, @RequestParam("id") String roomId) {
         RoomDto room;
         try {
             room = roomService.getRoomById(roomId);
@@ -64,4 +65,20 @@ public class RoomController {
         model.addAttribute("room", room);
         return "room";
     }
+
+    @PostMapping("/room")
+    public String joinRoom(Model model, @RequestParam boolean join, @RequestParam("id") String roomId) {
+        try {
+            if (join) {
+                roomService.addMyselfAsParticipant(roomId);
+            } else {
+                roomService.removeMyselfAsParticipant(roomId);
+            }
+        } catch (RoomNotExistException e) {
+            model.addAttribute("message", "There is no room with id " + roomId);
+            return "error";
+        }
+        return "redirect:/room?id=" + roomId;
+    }
+
 }

@@ -5,5 +5,20 @@
 <p th:text="${room.name}"></p>
 <p th:text="${room.id}"></p>
 
+<p th:text="#{label.room.participants}"></p>
+<p th:each="user: ${room.participants}" th:text="${user.email}">
+</p>
+
+<form th:if="!${room.isCurrentUserJoined}" action="/room" method="POST" enctype="utf8">
+    <input type="hidden" value="true" name="join"/>
+    <input type="hidden" th:value="${room.id}" name="id"/>
+    <button type="submit" th:text="#{label.room.join}">join</button>
+</form>
+<form th:if="${room.isCurrentUserJoined}" action="/room" method="POST" enctype="utf8">
+    <input type="hidden" value="false" name="join"/>
+    <input type="hidden" th:value="${room.id}" name="id"/>
+    <button type="submit" th:text="#{label.room.leave}">leave</button>
+</form>
+
 </body>
 </html>
