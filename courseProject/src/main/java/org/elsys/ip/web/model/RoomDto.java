@@ -5,6 +5,7 @@ import org.elsys.ip.web.model.validator.ValidEmail;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class RoomDto {
@@ -12,6 +13,7 @@ public class RoomDto {
 
     @NotNull
     @NotEmpty
+    @Size(min = 5, message = "The name should be more than 4 letters long.")
     private String name;
 
     public String getId() {

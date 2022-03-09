@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,10 +28,27 @@ public class RoomController {
 
     @GetMapping("/rooms")
     public String allRooms(WebRequest request, Model model) {
-        model.addAttribute("newRoom", new RoomDto());
+        model.addAttribute("room", new RoomDto());
         model.addAttribute("rooms",  roomService.getRooms());
 
         return "rooms";
+    }
+
+    @PostMapping("/rooms")
+    public String createRoom(@ModelAttribute("room") @Valid RoomDto roomDto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("rooms",  roomService.getRooms());
+            return "rooms";
+        }
+
+        try {
+            RoomDto room = roomService.createRoom(roomDto);
+            return "redirect:/room?id=" + room.getId();
+        } catch (RoomAlreadyExistException e) {
+            bindingResult.rejectValue("name", "room", "A room with that name already exists.");
+            model.addAttribute("rooms",  roomService.getRooms());
+            return "rooms";
+        }
     }
 
     @GetMapping("/room")
@@ -39,22 +57,11 @@ public class RoomController {
         try {
             room = roomService.getRoomById(roomId);
         } catch (RoomNotExistException e) {
+            model.addAttribute("message", "There is no room with id " + roomId);
             return "error";
         }
 
         model.addAttribute("room", room);
         return "room";
     }
-
-    @PostMapping("/room")
-    public String createRoom(@ModelAttribute("room") @Valid RoomDto roomDto, BindingResult bindingResult, Model model) {
-        try {
-            roomService.createRoom(roomDto);
-        } catch (RoomAlreadyExistException e) {
-            return "error";
-        }
-        return "room";
-    }
-
-
 }

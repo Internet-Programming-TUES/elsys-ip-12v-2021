@@ -51,7 +51,12 @@ public class RoomService {
     }
 
     public RoomDto getRoomById(String id) throws RoomNotExistException {
-        Optional<Room> room = roomRepository.findById(UUID.fromString(id));
+        Optional<Room> room = Optional.empty();
+        try {
+            room = roomRepository.findById(UUID.fromString(id));
+        } catch (IllegalArgumentException ex) {
+            // Do nothing
+        }
         if (room.isEmpty()) {
             throw new RoomNotExistException("There is no room with id " + id);
         }
