@@ -23,7 +23,6 @@ public class RegistrationController {
     public String showRegistrationForm(WebRequest request, Model model) {
         UserDto userDto = new UserDto();
         model.addAttribute("user", userDto);
-        model.addAttribute("message", null);
         model.addAttribute("errors", new HashMap<String, String>());
         return "registration";
     }
@@ -37,7 +36,7 @@ public class RegistrationController {
         try {
             User registered = userService.registerNewUserAccount(userDto);
         } catch (UserAlreadyExistException uaeEx) {
-            model.addAttribute("message", "An account for that username/email already exists.");
+            bindingResult.rejectValue("email", "user", "An account for that username/email already exists.");
             return "registration";
         }
 
