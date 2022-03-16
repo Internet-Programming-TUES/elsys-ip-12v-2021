@@ -1,5 +1,6 @@
-<html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml">
 <body>
+<div sec:authorize="isAuthenticated()" th:replace="fragments/menu.html :: menu" />
 <h1 th:text="#{label.error}"></h1>
 <p th:if="${message}" th:text="${message}" style="color:red;"></p>
 

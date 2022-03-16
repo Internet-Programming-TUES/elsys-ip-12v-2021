@@ -1,5 +1,6 @@
 <html>
 <body>
+<div th:replace="fragments/menu.html :: menu" />
 <h1 th:text="#{label.rooms.title}">form</h1>
 <form action="/rooms" th:object="${room}" method="POST" enctype="utf8">
   <div>
