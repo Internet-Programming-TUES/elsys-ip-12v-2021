@@ -26,3 +26,6 @@ https://spring.io/guides/gs/securing-web/
 https://springframework.guru/using-the-h2-database-console-in-spring-boot-with-spring-security/
 https://www.baeldung.com/spring-boot-internationalization
 https://www.baeldung.com/registration-with-spring-mvc-and-spring-security
+https://www.baeldung.com/java-selenium-with-junit-and-testng
+https://www.toolsqa.com/selenium-webdriver/page-factory-in-selenium/
+https://www.selenium.dev/documentation/test_practices/encouraged/page_object_models/
