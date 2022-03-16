@@ -4,8 +4,8 @@
 
 <h1 th:text="#{label.home.title}"></h1>
 <div sec:authorize="isAnonymous()">
-    <a th:href="@{/user/registration}" th:text="#{label.home.register}">register</a>
-    <a th:href="@{/login}" th:text="#{label.home.login}">login</a>
+    <a class="registerButton" th:href="@{/user/registration}" th:text="#{label.home.register}">register</a>
+    <a class="loginButton" th:href="@{/login}" th:text="#{label.home.login}">login</a>
 </div>
 
 </body>
