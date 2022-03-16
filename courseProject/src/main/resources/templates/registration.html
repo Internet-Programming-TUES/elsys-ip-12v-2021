@@ -1,29 +1,33 @@
 <html>
 <body>
 <h1 th:text="#{label.form.title}">form</h1>
-<form action="/user/registration" th:object="${user}" method="POST" enctype="utf8">
+<form action="/user/registration" th:object="${user}" method="POST" enctype="utf8" novalidate>
   <div>
     <label th:text="#{label.user.firstName}">first</label>
     <input th:field="*{firstName}"/>
     <p th:each="error: ${#fields.errors('firstName')}" style="color:red;"
+       class="error"
        th:text="${error}">Validation error</p>
   </div>
   <div>
     <label th:text="#{label.user.lastName}">last</label>
     <input th:field="*{lastName}"/>
     <p th:each="error : ${#fields.errors('lastName')}" style="color:red;"
+       class="error"
        th:text="${error}">Validation error</p>
   </div>
   <div>
     <label th:text="#{label.user.email}">email</label>
     <input type="email" th:field="*{email}"/>
     <p th:each="error : ${#fields.errors('email')}" style="color:red;"
+       class="error"
        th:text="${error}">Validation error</p>
   </div>
   <div>
     <label th:text="#{label.user.password}">password</label>
     <input type="password" th:field="*{password}"/>
     <p th:each="error : ${#fields.errors('password')}" style="color:red;"
+       class="error"
        th:text="${error}">Validation error</p>
   </div>
   <div>
@@ -31,6 +35,7 @@
     <input type="password" th:field="*{matchingPassword}"/>
   </div>
   <p th:each="error : ${#fields.errors('global')}"
+     class="error"
      th:text="${error}" style="color:red;">Validation error</p>
   <button type="submit" th:text="#{label.form.submit}">submit</button>
 </form>
