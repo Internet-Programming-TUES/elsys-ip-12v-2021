@@ -5,8 +5,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 
-public class HomePage {
+public class HomePage extends AbstractPage {
     @FindBy(how = How.CLASS_NAME, using = "registerButton")
     private WebElement registrationButton;
 
@@ -16,18 +17,18 @@ public class HomePage {
     @FindBy(how = How.ID, using = "logoutButton")
     private WebElement logoutButton;
 
-    private WebDriver driver;
-
     public HomePage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
-    public void register() {
+    public RegistrationPage register() {
         registrationButton.click();
+        return PageFactory.initElements(driver, RegistrationPage.class);
     }
 
-    public void login() {
+    public LoginPage login() {
         loginButton.click();
+        return PageFactory.initElements(driver, LoginPage.class);
     }
 
     public boolean isAuthenticated() {

@@ -1,10 +1,12 @@
 package org.elsys.ip.web.pageobjects;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 
-public class RegistrationPage {
+public class RegistrationPage extends AbstractPage {
     @FindBy(how = How.ID, using = "firstName")
     private WebElement firstName;
 
@@ -23,7 +25,11 @@ public class RegistrationPage {
     @FindBy(how = How.TAG_NAME, using = "button")
     private WebElement submitButton;
 
-    public void register(
+    public RegistrationPage(WebDriver driver) {
+        super(driver);
+    }
+
+    public HomePage register(
             String firstName,
             String lastName,
             String email,
@@ -34,5 +40,6 @@ public class RegistrationPage {
         this.password.sendKeys(password);
         this.matchingPassword.sendKeys(password);
         submitButton.click();
+        return PageFactory.initElements(driver, HomePage.class);
     }
 }

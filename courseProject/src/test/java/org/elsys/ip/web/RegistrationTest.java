@@ -40,14 +40,11 @@ public class RegistrationTest {
     public void registration() throws InterruptedException {
         driver.get(baseAddress);
         HomePage homePage = PageFactory.initElements(driver, HomePage.class);
-        homePage.register();
-        RegistrationPage registrationPage = PageFactory.initElements(driver, RegistrationPage.class);
-        registrationPage.register("First Name", "Last Name", "email@email.com", "password");
-        homePage = PageFactory.initElements(driver, HomePage.class);
-        homePage.login();
-        LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
-        loginPage.login("email@email.com", "password");
-        homePage = PageFactory.initElements(driver, HomePage.class);
+
+        RegistrationPage registrationPage = homePage.register();
+        homePage = registrationPage.register("First Name", "Last Name", "email@email.com", "password");
+        LoginPage loginPage = homePage.login();
+        homePage = loginPage.login("email@email.com", "password");
         assertThat(homePage.isAuthenticated()).isTrue();
     }
 }
