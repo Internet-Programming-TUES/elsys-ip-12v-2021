@@ -51,17 +51,17 @@ public class RoomService {
 
     public RoomDto addMyselfAsParticipant(String roomId) throws RoomNotExistException {
         Room room = getRoomEntityById(roomId);
-
-        room.getParticipants().add(getMyself());
-
+        if (room.getStartedTime() == null) {
+            room.getParticipants().add(getMyself());
+        }
         return convertRoom(room);
     }
 
     public RoomDto removeMyselfAsParticipant(String roomId) throws RoomNotExistException {
         Room room = getRoomEntityById(roomId);
-
-        room.getParticipants().remove(getMyself());
-
+        if (room.getStartedTime() == null) {
+            room.getParticipants().remove(getMyself());
+        }
         return convertRoom(room);
     }
 
@@ -82,12 +82,12 @@ public class RoomService {
         User user = getMyself();
 
         UserAnswer userAnswer = new UserAnswer();
-        userAnswer.setQuestion(question);
         userAnswer.setAnswer(answer);
         userAnswer.setUser(user);
 
         Set<UserAnswer> previousAttempts = room.getUserAnswers().stream().
-                filter(a -> a.getUser().getId().equals(user.getId()) && a.getQuestion().getId().equals(question.getId())).collect(Collectors.toSet());
+                filter(a -> a.getUser().getId().equals(user.getId()) &&
+                        question.getAnswers().stream().anyMatch(b -> b.getId().equals(a.getAnswer().getId()))).collect(Collectors.toSet());
 
         room.getUserAnswers().removeAll(previousAttempts);
         room.getUserAnswers().add(userAnswer);

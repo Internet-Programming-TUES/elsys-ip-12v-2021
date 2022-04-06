@@ -20,9 +20,6 @@ public class UserAnswer {
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Question question;
-
-    @ManyToOne(fetch = FetchType.EAGER)
     private Answer answer;
 
     public UUID getId() {
@@ -41,14 +38,6 @@ public class UserAnswer {
         this.user = user;
     }
 
-    public Question getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(Question question) {
-        this.question = question;
-    }
-
     public Answer getAnswer() {
         return answer;
     }
@@ -62,7 +51,6 @@ public class UserAnswer {
         return "UserAnswer{" +
                 "id=" + id +
                 ", user=" + user +
-                ", question=" + question +
                 ", answer=" + answer +
                 '}';
     }

@@ -4,6 +4,7 @@ import org.elsys.ip.error.BaseException;
 import org.elsys.ip.error.RoomAlreadyExistException;
 import org.elsys.ip.error.RoomAlreadyStartedException;
 import org.elsys.ip.error.RoomNotExistException;
+import org.elsys.ip.model.Question;
 import org.elsys.ip.service.QuestionService;
 import org.elsys.ip.service.RoomService;
 import org.elsys.ip.service.UserService;
@@ -78,12 +79,9 @@ public class RoomController {
 
         model.addAttribute("room", room);
 
-        if (room.getStartedTime() != null) {
+        if (room.getStartedTime() != null && room.isCurrentUserJoined()) {
+            Optional<QuestionDto> question = getCurrentQuestion(room);
             // Game mode
-            int questionTimeSeconds = Integer.parseInt(questionTime);
-            long secondsTillStart = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) - room.getStartedTime().toEpochSecond(ZoneOffset.UTC);
-            int index = (int) (secondsTillStart / questionTimeSeconds);
-            Optional<QuestionDto> question = questionService.getQuestionByIndex(index);
             if (question.isPresent()) {
                 model.addAttribute("question", question.get());
                 return "question";
@@ -124,14 +122,33 @@ public class RoomController {
     }
 
     @PostMapping("/room/answer")
-    public String startGame(Model model, @RequestParam("roomId") String roomId, @RequestParam("questionId") String questionId, @RequestParam("answerId") String answerId) {
+    public String answer(Model model, @RequestParam("roomId") String roomId, @RequestParam("questionId") String questionId, @RequestParam("answerId") String answerId) {
         try {
-            roomService.answer(roomId, questionId, answerId);
+            RoomDto room = roomService.getRoomById(roomId);
+            if (!room.isCurrentUserJoined()) {
+                model.addAttribute("message", "You are not allowed to play in that room");
+                return "error";
+            }
+
+            Optional<QuestionDto> question = getCurrentQuestion(room);
+            boolean isSameQuestion = question.isPresent() && question.get().getId().equals(questionId);
+
+            if (isSameQuestion) {
+                roomService.answer(roomId, questionId, answerId);
+            }
         } catch (BaseException e) {
             model.addAttribute("message", e.getMessage());
             return "error";
         }
 
         return "redirect:/room?id=" + roomId;
+    }
+
+    private Optional<QuestionDto> getCurrentQuestion(RoomDto room) {
+        int questionTimeSeconds = Integer.parseInt(questionTime);
+        long secondsTillStart = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) - room.getStartedTime().toEpochSecond(ZoneOffset.UTC);
+        int index = (int) (secondsTillStart / questionTimeSeconds);
+        Optional<QuestionDto> question = questionService.getQuestionByIndex(index);
+        return question;
     }
 }
