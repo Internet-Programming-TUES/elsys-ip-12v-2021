@@ -1,0 +1,14 @@
+<html>
+<body>
+<div th:replace="fragments/menu.html :: menu" />
+<h1 th:text="#{label.room.title}">form</h1>
+
+<p th:text="${room.name}"></p>
+<p th:text="${room.id}"></p>
+
+<p th:text="#{label.room.participants}"></p>
+<p th:each="user: ${room.participants}" th:text="${user.email} + ' ' + ${user.score}">
+</p>
+
+</body>
+</html>

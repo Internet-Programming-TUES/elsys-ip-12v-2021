@@ -6,6 +6,7 @@ import org.elsys.ip.web.model.validator.ValidEmail;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,6 +52,26 @@ public class RoomDto {
 
     public void setCurrentUserJoined(boolean currentUserJoined) {
         isCurrentUserJoined = currentUserJoined;
+    }
+
+    private boolean isCurrentUserAdmin;
+
+    public boolean isCurrentUserAdmin() {
+        return isCurrentUserAdmin;
+    }
+
+    public void setCurrentUserAdmin(boolean currentUserAdmin) {
+        isCurrentUserAdmin = currentUserAdmin;
+    }
+
+    private LocalDateTime startedTime;
+
+    public LocalDateTime getStartedTime() {
+        return startedTime;
+    }
+
+    public void setStartedTime(LocalDateTime startedTime) {
+        this.startedTime = startedTime;
     }
 
     @Override

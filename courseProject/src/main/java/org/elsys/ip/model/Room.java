@@ -3,6 +3,7 @@ package org.elsys.ip.model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -18,12 +19,18 @@ public class Room {
 
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
-    @JoinColumn(name="room")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "room")
     private Set<User> participants = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private User admin;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "room")
+    private Set<UserAnswer> userAnswers = new HashSet<>();
+
+    private LocalDateTime startedTime;
 
     public void setId(UUID id) {
         this.id = id;
@@ -55,6 +62,22 @@ public class Room {
 
     public void setAdmin(User admin) {
         this.admin = admin;
+    }
+
+    public Set<UserAnswer> getUserAnswers() {
+        return userAnswers;
+    }
+
+    public void setUserAnswers(Set<UserAnswer> userAnswers) {
+        this.userAnswers = userAnswers;
+    }
+
+    public LocalDateTime getStartedTime() {
+        return startedTime;
+    }
+
+    public void setStartedTime(LocalDateTime startedTime) {
+        this.startedTime = startedTime;
     }
 
     @Override

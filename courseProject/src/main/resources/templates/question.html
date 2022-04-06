@@ -1,0 +1,21 @@
+<html>
+<head>
+    <meta http-equiv="refresh" content="2" >
+</head>
+<body>
+<div th:replace="fragments/menu.html :: menu" />
+<h1 th:text="#{label.room.title}">form</h1>
+
+<p th:text="${room.name}"></p>
+<p th:text="${room.id}"></p>
+
+<p th:text="${question.text}"></p>
+
+<form action="/room/answer" method="POST" enctype="utf8">
+    <input type="hidden" th:value="${room.id}" name="roomId"/>
+    <input type="hidden" th:value="${question.id}" name="questionId"/>
+    <button th:each="answer: ${question.answers}" type="submit" th:text="${answer.text}" th:value="${answer.id}" name="answerId">answer</button>
+</form>
+
+</body>
+</html>

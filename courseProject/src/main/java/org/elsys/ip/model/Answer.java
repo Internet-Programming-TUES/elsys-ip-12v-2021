@@ -51,4 +51,22 @@ public class Answer {
                 ", correct=" + correct +
                 '}';
     }
+
+    public static Answer correct(
+            String text
+    ) {
+        Answer answer = new Answer();
+        answer.setText(text);
+        answer.setCorrect(true);
+        return answer;
+    }
+
+    public static Answer wrong(
+            String text
+    ) {
+        Answer answer = new Answer();
+        answer.setText(text);
+        answer.setCorrect(false);
+        return answer;
+    }
 }

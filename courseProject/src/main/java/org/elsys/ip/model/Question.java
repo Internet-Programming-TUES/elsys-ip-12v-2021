@@ -55,4 +55,14 @@ public class Question {
                 ", answers=" + answers +
                 '}';
     }
+
+    public static Question question(
+            String text,
+            Answer... answers
+    ) {
+        Question question = new Question();
+        question.setText(text);
+        question.setAnswers(List.of(answers));
+        return question;
+    }
 }
